@@ -1,0 +1,3 @@
+[submodule "components/ws2812"]
+	path = components/ws2812
+	url = https://github.com/maxx-ukoo/ESP32-NeoPixel-WS2812-RMT.git
