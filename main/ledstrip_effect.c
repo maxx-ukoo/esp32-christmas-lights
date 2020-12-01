@@ -131,7 +131,7 @@ void rainbowCycle(rgbVal *pixels, int pixels_count, int SpeedDelay) {
   uint8_t *c;
   uint16_t i, j;
 
-  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
+  for(j=0; j<256*10; j++) { // 5 cycles of all colors on wheel
     for(i=0; i< pixels_count; i++) {
       c=Wheel(((i * 256 / pixels_count) + j) & 255);
       setPixel(pixels, i, *c, *(c+1), *(c+2));
@@ -169,3 +169,96 @@ void RGBLoop(rgbVal *pixels, int pixels_count, int count) {
   }
 }
 
+void Strobe(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int StrobeCount, int FlashDelay, int EndPause) {
+  for(int j = 0; j < StrobeCount; j++) {
+    setAll(pixels, pixels_count, red,green,blue);
+    delay_ms(FlashDelay);
+    setAll(pixels, pixels_count, 0, 0, 0);
+    delay_ms(FlashDelay);
+  }
+ 
+ delay_ms(EndPause);
+}
+
+void CenterToOutside(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i =((pixels_count-EyeSize)/2); i>=0; i--) {
+    setAll(pixels, pixels_count, 0,0,0);
+   
+    setPixel(pixels, i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, i+j, red, green, blue);
+    }
+    setPixel(pixels, i+EyeSize+1, red/10, green/10, blue/10);
+   
+    setPixel(pixels, pixels_count-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, pixels_count-i-j, red, green, blue);
+    }
+    setPixel(pixels, pixels_count-i-EyeSize-1, red/10, green/10, blue/10);
+   
+    ws2812_write_leds(pixels);
+    delay_ms(SpeedDelay);
+  }
+  delay_ms(ReturnDelay);
+}
+
+void OutsideToCenter(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i<=((pixels_count-EyeSize)/2); i++) {
+    setAll(pixels, pixels_count, 0,0,0);
+   
+    setPixel(pixels, i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, i+j, red, green, blue);
+    }
+    setPixel(pixels, i+EyeSize+1, red/10, green/10, blue/10);
+   
+    setPixel(pixels, pixels_count-i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, pixels_count-i-j, red, green, blue);
+    }
+    setPixel(pixels, pixels_count-i-EyeSize-1, red/10, green/10, blue/10);
+   
+    ws2812_write_leds(pixels);
+    delay_ms(SpeedDelay);
+  }
+  delay_ms(ReturnDelay);
+}
+
+void LeftToRight(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = 0; i < pixels_count-EyeSize-2; i++) {
+    setAll(pixels, pixels_count, 0,0,0);
+    setPixel(pixels, i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, i+j, red, green, blue);
+    }
+    setPixel(pixels, +EyeSize+1, red/10, green/10, blue/10);
+    ws2812_write_leds(pixels);
+    delay_ms(SpeedDelay);
+  }
+  delay_ms(ReturnDelay);
+}
+
+void RightToLeft(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
+  for(int i = pixels_count-EyeSize-2; i > 0; i--) {
+    setAll(pixels, pixels_count, 0,0,0);
+    setPixel(pixels, i, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      setPixel(pixels, i+j, red, green, blue);
+    }
+    setPixel(pixels, i+EyeSize+1, red/10, green/10, blue/10);
+    ws2812_write_leds(pixels);
+    delay_ms(SpeedDelay);
+  }
+  delay_ms(ReturnDelay);
+}
+
+void NewKITT(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+  RightToLeft(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  LeftToRight(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  RightToLeft(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  OutsideToCenter(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+  CenterToOutside(pixels, pixels_count, red, green, blue, EyeSize, SpeedDelay, ReturnDelay);
+}

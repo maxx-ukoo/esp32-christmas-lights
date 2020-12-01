@@ -157,6 +157,8 @@ void random_effects(void *pvParameters){
     meteorRain(pixels, NUM_LEDS, red, green, blue, 2, 64, true, 5);
     rainbowCycle(pixels, NUM_LEDS, 20);
     RGBLoop(pixels, NUM_LEDS, 5);
+    Strobe(pixels, NUM_LEDS, red, green, blue, 10, 50, 1000);
+    NewKITT(pixels, NUM_LEDS, red, green, blue, 8, 10, 50);
   }
 }
 

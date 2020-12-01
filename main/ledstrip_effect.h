@@ -12,6 +12,8 @@ void meteorRain(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, ui
 void cylonBounce(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay);
 void rainbowCycle(rgbVal *pixels, int pixels_count, int SpeedDelay);
 void RGBLoop(rgbVal *pixels, int pixels_count, int count);
+void Strobe(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int StrobeCount, int FlashDelay, int EndPause);
+void NewKITT(rgbVal *pixels, int pixels_count, uint8_t red, uint8_t green, uint8_t blue, int EyeSize, int SpeedDelay, int ReturnDelay);
 
 void setPixel(rgbVal *pixels, int pixel, uint8_t red, uint8_t green, uint8_t blue);
 rgbVal get_pixel_color(rgbVal *pixels, int pixel);
